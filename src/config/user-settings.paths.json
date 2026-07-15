@@ -1,136 +1,131 @@
 {
   "name": "user-settings",
-  "common": [
+  "dotfilesPath": "user-settings",
+  "items": [
     {
-      "id": "gitconfig",
+      "id": "common/gitconfig",
       "description": "Git configs",
-      "dotfilesPath": "user/common/.gitconfig",
+      "dotfilesPath": "user-settings/common/.gitconfig",
       "targets": {
         "windows": ".gitconfig",
         "linux": ".gitconfig"
       }
     },
     {
-      "id": "gitignore_global",
+      "id": "common/gitignore_global",
       "description": "Git global ignores",
-      "dotfilesPath": "user/common/.gitignore_global",
+      "dotfilesPath": "user-settings/common/.gitignore_global",
       "targets": {
         "windows": ".gitignore_global",
         "linux": ".gitignore_global"
       }
     },
     {
-      "id": "gitconfig_local",
+      "id": "common/gitconfig_local",
       "description": "Git local configs",
-      "dotfilesPath": "user/common/.gitconfig.local",
+      "dotfilesPath": "user-settings/common/.gitconfig.local",
       "targets": {
         "windows": ".gitconfig.local",
         "linux": ".gitconfig.local"
       }
     },
     {
-      "id": "lazygit",
+      "id": "common/lazygit",
       "description": "Lazygit settings",
-      "dotfilesPath": "user/common/lazygit.yml",
+      "dotfilesPath": "user-settings/common/lazygit.yml",
       "targets": {
         "windows": "AppData/Local/lazygit/config.yml",
         "linux": ".config/lazygit/config.yml"
       }
     },
     {
-      "id": "starship",
+      "id": "common/starship",
       "description": "Starship settings",
-      "dotfilesPath": "user/common/starship.toml",
+      "dotfilesPath": "user-settings/common/starship.toml",
       "targets": {
         "windows": ".config/starship.toml",
         "linux": ".config/starship.toml"
       }
-    }
-  ],
-  "linux": [
+    },
     {
-      "id": "bash_aliases",
+      "id": "linux/bash_aliases",
       "description": "Linux aliases",
-      "dotfilesPath": "user/linux/.bash_aliases",
+      "dotfilesPath": "user-settings/linux/.bash_aliases",
       "targets": {
         "linux": ".bash_aliases"
       }
     },
     {
-      "id": "bash_functions",
+      "id": "linux/bash_functions",
       "description": "Linux functions",
-      "dotfilesPath": "user/linux/.bash_functions",
+      "dotfilesPath": "user-settings/linux/.bash_functions",
       "targets": {
         "linux": ".bash_functions"
       }
     },
     {
-      "id": "bashrc",
+      "id": "linux/bashrc",
       "description": "Linux bashrc",
-      "dotfilesPath": "user/linux/.bashrc",
+      "dotfilesPath": "user-settings/linux/.bashrc",
       "targets": {
         "linux": ".bashrc"
       }
     },
     {
-      "id": "profile",
+      "id": "linux/profile",
       "description": "Linux profile",
-      "dotfilesPath": "user/linux/.profile",
+      "dotfilesPath": "user-settings/linux/.profile",
       "targets": {
         "linux": ".profile"
       }
-    }
-  ],
-  "windows": [
+    },
     {
-      "id": "bash_profile",
+      "id": "windows/bash_profile",
       "description": "Windows Git Bash profile",
-      "dotfilesPath": "user/windows/.bash_profile",
+      "dotfilesPath": "user-settings/windows/.bash_profile",
       "targets": {
         "windows": ".bash_profile"
       }
     },
     {
-      "id": "bashrc",
+      "id": "windows/bashrc",
       "description": "Windows Git bashrc",
-      "dotfilesPath": "user/windows/.bashrc",
+      "dotfilesPath": "user-settings/windows/.bashrc",
       "targets": {
         "windows": ".bashrc"
       }
-    }
-  ],
-  "vscode": [
+    },
     {
-      "id": "keybindings",
+      "id": "vscode/keybindings",
       "description": "VS Code keybindings",
-      "dotfilesPath": "user/vscode/keybindings.json",
+      "dotfilesPath": "user-settings/vscode/keybindings.json",
       "targets": {
         "windows": "AppData/Roaming/Code/User/keybindings.json",
         "linux": ".config/Code/User/keybindings.json"
       }
     },
     {
-      "id": "settings",
+      "id": "vscode/settings",
       "description": "VS Code user settings",
-      "dotfilesPath": "user/vscode/settings.json",
+      "dotfilesPath": "user-settings/vscode/settings.json",
       "targets": {
         "windows": "AppData/Roaming/Code/User/settings.json",
         "linux": ".config/Code/User/settings.json"
       }
     },
     {
-      "id": "node-snippets",
+      "id": "vscode/node-snippets",
       "description": "VS Code nodejs snippets",
-      "dotfilesPath": "user/vscode/snippets/qg-node.code-snippets",
+      "dotfilesPath": "user-settings/vscode/snippets/qg-node.code-snippets",
       "targets": {
         "windows": "AppData/Roaming/Code/User/snippets/qg-node.code-snippets",
         "linux": ".config/Code/User/snippets/qg-node.code-snippets"
       }
     },
     {
-      "id": "script-snippets",
+      "id": "vscode/script-snippets",
       "description": "VS Code js/ts snippets",
-      "dotfilesPath": "user/vscode/snippets/qg-script.code-snippets",
+      "dotfilesPath": "user-settings/vscode/snippets/qg-script.code-snippets",
       "targets": {
         "windows": "AppData/Roaming/Code/User/snippets/qg-script.code-snippets",
         "linux": ".config/Code/User/snippets/qg-script.code-snippets"

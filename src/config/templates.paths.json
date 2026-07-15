@@ -9,42 +9,45 @@
       "framework": "node",
       "language": "ts",
       "type": "production",
-      "dotfilesPath": "templates/node-ts"
+      "dotfilesPath": "templates/node-ts",
+      "targets": [
+        "cspell.json",
+        "eslint.config.js",
+        "package.json",
+        "tsconfig.json",
+        ".editorconfig",
+        ".gitattributes",
+        ".gitignore",
+        ".prettierignore",
+        ".prettierrc",
+        "src/app.ts"
+      ]
     },
     {
       "id": "react-ts",
       "framework": "react",
       "language": "ts",
       "type": "production",
-      "dotfilesPath": "templates/react-ts"
-    },
-    {
-      "id": "cli-ts",
-      "framework": "cli",
-      "language": "ts",
-      "type": "archive",
-      "dotfilesPath": "templates/archive/cli-ts"
-    },
-    {
-      "id": "react-js",
-      "framework": "react",
-      "language": "js",
-      "type": "archive",
-      "dotfilesPath": "templates/archive/react-js"
-    },
-    {
-      "id": "vanilla-js",
-      "framework": "vanilla",
-      "language": "js",
-      "type": "archive",
-      "dotfilesPath": "templates/archive/vanilla-js"
-    },
-    {
-      "id": "vanilla-ts",
-      "framework": "vanilla",
-      "language": "ts",
-      "type": "archive",
-      "dotfilesPath": "templates/archive/vanilla-ts"
+      "dotfilesPath": "templates/react-ts",
+      "targets": [
+        "cspell.json",
+        "eslint.config.js",
+        "index.html",
+        "package.json",
+        "tsconfig.app.json",
+        "tsconfig.json",
+        "tsconfig.node.json",
+        "vite.config.ts",
+        ".editorconfig",
+        ".gitattributes",
+        ".gitignore",
+        ".prettierignore",
+        ".prettierrc",
+        "src/styles/App.css",
+        "src/styles/main.css",
+        "src/App.tsx",
+        "src/main.tsx"
+      ]
     }
   ]
 }
