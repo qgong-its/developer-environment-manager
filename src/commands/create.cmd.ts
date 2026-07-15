@@ -2,8 +2,11 @@ import { cp } from 'node:fs/promises';
 
 import { loadTemplatesConfig } from '../config/config.loader.js';
 import { ensureDirectory, ensureEmptyDirectory } from '../utils/file.utils.js';
-import { resolveDotfilesPath, resolveWorkspacePath } from './path.service.js';
-import { writeLogLine } from './logger.service.js';
+import {
+  resolveDotfilesPath,
+  resolveWorkspacePath,
+} from '../services/path.service.js';
+import { writeLogLine } from '../services/logger.service.js';
 
 export const create = async (
   framework: string,

@@ -1,5 +1,5 @@
 import { constants } from 'node:fs';
-import { access, mkdir, readdir, stat } from 'node:fs/promises';
+import { access, mkdir, readdir, stat, lstat } from 'node:fs/promises';
 
 /**
  * Checks whether a filesystem path is accessible.
@@ -10,6 +10,16 @@ export const pathExists = async (targetPath: string): Promise<boolean> => {
   try {
     await access(targetPath, constants.F_OK);
     return true;
+  } catch {
+    return false;
+  }
+};
+
+export const isFile = async (targetPath: string): Promise<boolean> => {
+  try {
+    const targetStat = await lstat(targetPath);
+
+    return targetStat.isFile();
   } catch {
     return false;
   }
