@@ -1,5 +1,6 @@
-import { homedir } from 'node:os';
+import { homedir, platform } from 'node:os';
 import { isAbsolute, resolve } from 'node:path';
+import { getPlatform } from './platform.service.js';
 
 /**
  * Returns the DevEnvMgr project root.
@@ -160,8 +161,15 @@ console.log({
  * The host operating system is irrelevant to DevEnvMgr. Only the mount path
  * visible from the current VM matters.
  */
+
 export const getHostWorkspaceMountDir = (): string => {
-  const configuredPath = process.env.DEM_HOST_WORKSPACE_MOUNT?.trim();
+  const DEM_HOST_WORKSPACE_MOUNT =
+    getPlatform() === 'linux'
+      ? process.env.HOST_WORKSPACE_VM_UBUNTU
+      : getPlatform() === 'windows'
+        ? process.env.HOST_WORKSPACE_VM_WINDOWS
+        : '';
+  const configuredPath = DEM_HOST_WORKSPACE_MOUNT?.trim();
 
   if (!configuredPath) {
     throw new Error(
@@ -171,6 +179,16 @@ export const getHostWorkspaceMountDir = (): string => {
 
   return resolve(configuredPath);
 };
+
+/*
+console.log({
+  cwd: process.cwd(),
+  platform: getPlatform(),
+  HOST_WORKSPACE_VM_UBUNTU: process.env.HOST_WORKSPACE_VM_UBUNTU,
+  HOST_WORKSPACE_VM_WINDOWS: process.env.HOST_WORKSPACE_VM_WINDOWS,
+  configuredPath: getHostWorkspaceMountDir(),
+});
+*/
 
 /**
  * Resolves a path below the physical host's Workspace mount as seen from
