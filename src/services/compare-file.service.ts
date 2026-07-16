@@ -1,6 +1,7 @@
 import { diffLines } from 'diff';
 import { readFile } from 'node:fs/promises';
 import { CompareResult, FileChange } from '../schemas/compare.schema.js';
+import { OPT_STATUS } from '../schemas/opt.schema.js';
 
 export const compareFile = async (
   key: string,
@@ -20,6 +21,7 @@ export const compareFile = async (
     key,
     sourcePath,
     targetPath,
+    status: identical ? OPT_STATUS.IDENTICAL : OPT_STATUS.DIFFERENT,
     identical,
     changes,
   };
