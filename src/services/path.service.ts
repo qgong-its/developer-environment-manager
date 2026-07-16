@@ -215,6 +215,10 @@ export const resolveHostWorkspacePath = (...paths: string[]): string =>
 export const getHostDotfilesDir = (): string =>
   resolveHostWorkspacePath(process.env.DOTFILES_DIR?.trim() || 'dotfiles');
 
+/*
+console.log(getHostDotfilesDir());
+*/
+
 /**
  * Resolves a managed resource path below the physical host's mounted
  * dotfiles directory.
