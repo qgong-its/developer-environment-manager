@@ -21,7 +21,7 @@ const generateLogFilePath = (cmd: CMD = 'DIFF', fileName = 'default') => {
 
   const safeFileName = sanitizeFileName(fileName);
 
-  return path.join(logDir, `${date}_${cmd.toLowerCase()}_${safeFileName}.log`);
+  return path.join(logDir, `${date}__${cmd.toLowerCase()}__${safeFileName}.log`);
 };
 
 /**

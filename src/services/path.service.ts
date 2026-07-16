@@ -1,4 +1,4 @@
-import { homedir, platform } from 'node:os';
+import { homedir } from 'node:os';
 import { isAbsolute, resolve } from 'node:path';
 import { getPlatform } from './platform.service.js';
 
@@ -106,14 +106,14 @@ export const resolveWorkspacePath = (...paths: string[]): string =>
  *   <Workspace>/dotfiles
  *
  * Optional override:
- *   <Workspace>/DEM_DOTFILES_DIR
+ *   <Workspace>/DOTFILES_DIR
  *
- * If DEM_DOTFILES_DIR is not configured, the directory is derived from the
+ * If DOTFILES_DIR is not configured, the directory is derived from the
  * configured Workspace directory. This means changing DEM_WORKSPACE_DIR also
  * changes the default dotfiles location.
  */
 export const getDotfilesDir = (): string =>
-  resolveWorkspacePath(process.env.DEM_DOTFILES_DIR?.trim() || 'dotfiles');
+  resolveWorkspacePath(process.env.DOTFILES_DIR?.trim() || 'dotfiles');
 
 /**
  * Resolves a managed resource path below the current machine's local
@@ -129,7 +129,7 @@ export const resolveDotfilesPath = (...paths: string[]): string =>
 /*
 console.log({
   cwd: process.cwd(),
-  dotfilesEnv: process.env.DEM_DOTFILES_DIR,
+  dotfilesEnv: process.env.DOTFILES_DIR,
   resolved: resolveDotfilesPath('templates/node-ts'),
 });
 */
@@ -141,39 +141,43 @@ console.log({
  * The environment variable must contain the path as visible inside the
  * current VM. It must not contain the physical host's native filesystem path.
  *
- * Required environment variable:
- *   DEM_HOST_WORKSPACE_MOUNT
- *
- * Examples:
+ * Examples for required environment variable::
  *
  * Windows host → Linux VM:
- *   DEM_HOST_WORKSPACE_MOUNT=/mnt/hgfs/Workspace
+ *   HOST_WORKSPACE_MOUNT=/mnt/hgfs/Workspace
  *
  * Ubuntu host → Linux VM:
- *   DEM_HOST_WORKSPACE_MOUNT=/mnt/hgfs/Workspace
+ *   HOST_WORKSPACE_MOUNT=/mnt/hgfs/Workspace
  *
  * Ubuntu host → Windows VM:
- *   DEM_HOST_WORKSPACE_MOUNT=Z:\Workspace
+ *   HOST_WORKSPACE_MOUNT=Z:\Workspace
  *
  * Windows or Ubuntu host → Windows VM through UNC:
- *   DEM_HOST_WORKSPACE_MOUNT=\\vmware-host\Shared Folders\Workspace
+ *   HOST_WORKSPACE_MOUNT=\\vmware-host\Shared Folders\Workspace
  *
  * The host operating system is irrelevant to DevEnvMgr. Only the mount path
  * visible from the current VM matters.
  */
 
 export const getHostWorkspaceMountDir = (): string => {
-  const DEM_HOST_WORKSPACE_MOUNT =
-    getPlatform() === 'linux'
-      ? process.env.HOST_WORKSPACE_VM_UBUNTU
-      : getPlatform() === 'windows'
-        ? process.env.HOST_WORKSPACE_VM_WINDOWS
+  const platform = getPlatform();
+
+  const HOST_WORKSPACE_MOUNT =
+    platform === 'linux'
+      ? 'HOST_WORKSPACE_VM_UBUNTU'
+      : platform === 'windows'
+        ? 'HOST_WORKSPACE_VM_WINDOWS'
         : '';
-  const configuredPath = DEM_HOST_WORKSPACE_MOUNT?.trim();
+
+  if (!HOST_WORKSPACE_MOUNT) {
+    throw new Error(`Unsupported platform: "${platform}"`);
+  }
+
+  const configuredPath = process.env[HOST_WORKSPACE_MOUNT]?.trim();
 
   if (!configuredPath) {
     throw new Error(
-      'Missing required environment variable: ' + 'DEM_HOST_WORKSPACE_MOUNT',
+      `Missing required environment variable: ${HOST_WORKSPACE_MOUNT}`,
     );
   }
 
@@ -206,10 +210,10 @@ export const resolveHostWorkspacePath = (...paths: string[]): string =>
  * Workspace mount.
  *
  * Result:
- *   <DEM_HOST_WORKSPACE_MOUNT>/dotfiles
+ *   <HOST_WORKSPACE_MOUNT>/dotfiles
  */
 export const getHostDotfilesDir = (): string =>
-  resolveHostWorkspacePath('dotfiles');
+  resolveHostWorkspacePath(process.env.DOTFILES_DIR?.trim() || 'dotfiles');
 
 /**
  * Resolves a managed resource path below the physical host's mounted
