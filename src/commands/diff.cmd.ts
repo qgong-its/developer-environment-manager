@@ -1,15 +1,13 @@
-import {
-  COMPARE_STATUS,
-  FileChange,
-  type CompareResult,
-} from '../schemas/compare.schema.js';
+import { FileChange, type CompareResult } from '../schemas/compare.schema.js';
 import { DIFF_INDEX_MAP, DiffMode } from '../schemas/diff.schema.js';
 import { compareFile } from '../services/compare-file.service.js';
 import { buildOptFilePathsMaps } from '../services/build-opt-map.service.js';
 import { writeLogLine } from '../services/logger.service.js';
+import { OPT_STATUS } from '../schemas/opt.schema.js';
+import { isFile } from '../utils/file.utils.js';
 
 const formatChanged = (change: FileChange): string => {
-  const prefix = change.added ? '+ ' : change.removed ? '- ' : '? ';
+  const prefix = change.added ? '+ ' : change.removed ? '- ' : '  ';
 
   if (!prefix) {
     return '';
@@ -41,6 +39,19 @@ const formatResult = (result: CompareResult): string => {
   );
 };
 
+const createMissingCompareResult = (
+  key: string,
+  sourcePath: string | 0,
+  targetPath: string | 0,
+): CompareResult => ({
+  key,
+  sourcePath: sourcePath === 0 ? '<missing>' : sourcePath,
+  targetPath: targetPath === 0 ? '<missing>' : targetPath,
+  status: OPT_STATUS.MISSING,
+  identical: false,
+  changes: [],
+});
+
 export const diff = async (
   mode: DiffMode,
   scope?: string,
@@ -65,15 +76,43 @@ export const diff = async (
       const targetPath = fileEntry[targetIndex];
 
       if (sourcePath === 0 || targetPath === 0) {
-        fileEntry[3] = COMPARE_STATUS.MISSING;
-        throw new Error(`Missing path for "${key}" in diff mode "${mode}"`);
+        const result = createMissingCompareResult(key, sourcePath, targetPath);
+
+        fileEntry[3] = result.status;
+        fileEntry[4] = result.changes;
+
+        writeLogLine('DIFF', key, formatResult(result));
+
+        results.push(result);
+
+        continue;
+      }
+
+      const sourceFileExists = await isFile(sourcePath);
+      const targetFileExists = await isFile(targetPath);
+
+      if (!sourceFileExists || !targetFileExists) {
+        const result = createMissingCompareResult(
+          key,
+          sourceFileExists ? sourcePath : `${sourcePath} <not found>`,
+          targetFileExists ? targetPath : `${targetPath} <not found>`,
+        );
+
+        fileEntry[3] = result.status;
+        fileEntry[4] = result.changes;
+
+        writeLogLine('DIFF', key, formatResult(result));
+
+        results.push(result);
+
+        continue;
       }
 
       const result = await compareFile(key, sourcePath, targetPath);
 
       fileEntry[3] = result.identical
-        ? COMPARE_STATUS.IDENTICAL
-        : COMPARE_STATUS.DIFFERENT;
+        ? OPT_STATUS.IDENTICAL
+        : OPT_STATUS.DIFFERENT;
       fileEntry[4] = result.changes;
 
       writeLogLine('DIFF', key, formatResult(result));

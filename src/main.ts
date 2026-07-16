@@ -3,6 +3,13 @@ import { create } from './commands/create.cmd.js';
 import { diff } from './commands/diff.cmd.js';
 import type { DiffMode } from './schemas/diff.schema.js';
 
+class CliUsageError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'CliUsageError';
+  }
+}
+
 const printUsage = (): void => {
   console.log(`
 Usage:
@@ -51,9 +58,7 @@ const main = async (): Promise<void> => {
   const [command, ...args] = process.argv.slice(2);
 
   if (!command) {
-    printUsage();
-    process.exitCode = 1;
-    return;
+    throw new CliUsageError('Missing command.');
   }
 
   switch (command) {
@@ -61,7 +66,7 @@ const main = async (): Promise<void> => {
       const [framework, language, destination] = args;
 
       if (!framework || !language || !destination) {
-        throw new Error('Missing arguments for the create command.');
+        throw new CliUsageError('Missing arguments for the create command.');
       }
 
       const templateId = `${framework}-${language}`;
@@ -79,7 +84,7 @@ const main = async (): Promise<void> => {
       const [mode, ...parameters] = args;
 
       if (!mode || !isDiffMode(mode)) {
-        throw new Error(`❌ Unknown or missing diff mode: "${mode ?? ''}"`);
+        throw new CliUsageError(`Unknown or missing diff mode: "${mode ?? ''}"`);
       }
 
       validateDiffArgs(mode, parameters);
@@ -121,6 +126,9 @@ main().catch((error: unknown) => {
 
   console.error(`❌ ${message}`);
 
-  printUsage();
+  if (error instanceof CliUsageError) {
+    printUsage();
+  }
+
   process.exitCode = 1;
 });

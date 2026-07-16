@@ -80,6 +80,14 @@
       }
     },
     {
+      "id": "linux/gitconfig-linux",
+      "description": "Linux-specific Git configuration",
+      "dotfilesPath": "user-settings/linux/.gitconfig.linux",
+      "targets": {
+        "linux": ".gitconfig.linux"
+      }
+    },
+    {
       "id": "windows/bash_profile",
       "description": "Windows Git Bash profile",
       "dotfilesPath": "user-settings/windows/.bash_profile",
@@ -93,6 +101,14 @@
       "dotfilesPath": "user-settings/windows/.bashrc",
       "targets": {
         "windows": ".bashrc"
+      }
+    },
+    {
+      "id": "windows/gitconfig-win",
+      "description": "Windows-specific Git configuration",
+      "dotfilesPath": "user-settings/windows/.gitconfig.win",
+      "targets": {
+        "windows": ".gitconfig.win"
       }
     },
     {
